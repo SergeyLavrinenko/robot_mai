@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/ser/Рабочий стол/proga 4 sem/opencv/test_1/build",
+  "command": "/usr/bin/g++  -isystem /usr/local/include/opencv4 -g -o CMakeFiles/main.dir/main2.cpp.o -c \"/home/ser/Рабочий стол/proga 4 sem/opencv/test_1/main2.cpp\"",
+  "file": "/home/ser/Рабочий стол/proga 4 sem/opencv/test_1/main2.cpp"
+}
+]
