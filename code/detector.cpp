@@ -32,6 +32,9 @@ int Detector::calc_angle_beetwen_point(Point p_a, Point p_b){
     else
         return 360 + deg;
 }
+int Detector::calc_distance_beetwen_point(Point p_a, Point p_b){
+    return sqrt((p_b.x - p_a.x)*(p_b.x - p_a.x) + (p_b.y - p_a.y)*(p_b.y - p_a.y));
+}
 
 void Detector::update_angle_bot(){
     Point p_a = find_rect_centre(rect_bot_front);
@@ -43,10 +46,13 @@ void Detector::update_angle_bot(){
 
 void Detector::update_angle_to_target(){
     Point point_target = find_rect_centre(rect_target);
-
     int angle_bot_centre_to_target = calc_angle_beetwen_point(this->point_centre_bot, point_target);
-    
     this->angle_target = angle_bot_centre_to_target - this->angle_bot;
+}
+
+void Detector::update_distance_to_target(){
+    Point point_target = find_rect_centre(rect_target);
+    this->distance_target = calc_distance_beetwen_point(this->point_centre_bot, point_target);
 }
 
 Detector::Detector(int id){
@@ -60,6 +66,29 @@ Mat Detector::get_image(){
     return frame_res;
 }
 
+void Detector::draw_image(){
+    this->draw_rect_bot_front(0, 255, 0);
+    this->draw_rect_bot_rear(255, 0 , 0);
+    this->draw_rect_target(0, 0, 255);
+
+    Mat res_image = this->get_image();
+
+    // ---- Наносим градусы на картинку ----
+    Point text_position(20, 30);
+    int font_size = 1;
+    Scalar font_Color(90, 100, 0);
+    int font_weight = 2;
+    putText(res_image, std::to_string(this->get_angle_to_target()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
+    // ------Наносим расстояние до цели-----
+    Point text_position1(20, 60);
+    int font_size1 = 1;
+    Scalar font_Color1(90, 100, 0);
+    int font_weight1 = 2;
+    putText(res_image, std::to_string(this->get_distance_to_target()), text_position1,FONT_HERSHEY_COMPLEX, font_size1,font_Color1, font_weight1);
+
+    cv::imshow("tmp", res_image);
+}
+
 void Detector::update_image(){
     cap >> frame;
     frame_res = frame;
@@ -70,6 +99,7 @@ void Detector::update_image(){
 
     this->update_angle_bot();
     this->update_angle_to_target();
+    this->update_distance_to_target();
 }
 
 int Detector::get_angle_to_target(){
@@ -77,6 +107,21 @@ int Detector::get_angle_to_target(){
 }
 int Detector::get_angle_bot(){
     return this->angle_bot;
+}
+int Detector::get_distance_to_target(){
+    return this->distance_target;
+}
+bool Detector::has_delta_angle(int delta){
+    if (this->angle_target > delta)
+        return true;
+    else
+        return false;
+}
+bool Detector::has_delta_distance(int delta){
+    if (this->distance_target > delta)
+        return true;
+    else
+        return false;
 }
 
 void Detector::set_color_bot_front(int h, int s, int v){

@@ -27,13 +27,16 @@ class Detector{
 
     int angle_bot;
     int angle_target;
+    int distance_target;
 
     static Point find_rect_centre(Rect r);
     static Point find_centre_beetwen_point(Point p1, Point p2);
     static int calc_angle_beetwen_point(Point p1, Point p2);
+    static int calc_distance_beetwen_point(Point p_a, Point p_b);
 
     void update_angle_bot();
     void update_angle_to_target();
+    void update_distance_to_target();
 
     Rect detect_rect(color_hsv color);
 
@@ -49,9 +52,13 @@ class Detector{
 
     Mat get_image();
     void update_image();
+    void draw_image();
 
     int get_angle_bot();
     int get_angle_to_target();
+    int get_distance_to_target();
+    bool has_delta_angle(int delta);
+    bool has_delta_distance(int delta);
 
     void draw_rect_bot_front(int frame_r, int frame_g, int frame_b);
     void draw_rect_bot_rear(int frame_r, int frame_g, int frame_b);
