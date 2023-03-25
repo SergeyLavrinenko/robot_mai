@@ -1,0 +1,3 @@
+[submodule "kos-abot"]
+	path = kos-abot
+	url = https://github.com/MrQuaters/kos-abot.git
