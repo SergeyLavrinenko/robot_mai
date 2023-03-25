@@ -1,0 +1,41 @@
+entities:
+
+# The `client` entity can call `server`.
+- name: echo.Client
+  env:
+    VFS_FILESYSTEM_BACKEND: client:@ROOTFS_ENTITY@
+    VFS_NETWORK_BACKEND: client:kl.VfsNet
+  connections:
+  - target: kl.VfsNet
+    id: kl.VfsNet
+  - target: @ROOTFS_ENTITY@
+    id: @ROOTFS_ENTITY@
+  - target: echo.ConfigurationServer
+    id: configuration_connection
+  - target: echo.NavigationController
+    id: navigation_connection
+@INIT_Client_ENTITY_CONNECTIONS+@
+
+- name: kl.Ntpd
+  path: ntpd
+  env:
+    VFS_FILESYSTEM_BACKEND: client:@ROOTFS_ENTITY@
+    VFS_NETWORK_BACKEND: client:kl.VfsNet
+  args:
+    - "-4"
+    - -c
+    - /etc/ntp.conf
+  connections:
+  - target: kl.VfsNet
+    id: kl.VfsNet
+  - target: @ROOTFS_ENTITY@
+    id: @ROOTFS_ENTITY@   
+@INIT_Ntpd_ENTITY_CONNECTIONS+@
+
+- name: echo.NavigationController
+@INIT_NavigationController_ENTITY_CONNECTIONS@
+# The `server` entity can only respond to requests.
+- name: echo.ConfigurationServer
+@INIT_ConfigurationServer_ENTITY_CONNECTIONS@
+
+@INIT_EXTERNAL_ENTITIES@

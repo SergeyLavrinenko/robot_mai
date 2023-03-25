@@ -1,0 +1,5 @@
+entity echo.NavigationController
+
+components {
+    NavigationController : echo.NavigationCommand
+}

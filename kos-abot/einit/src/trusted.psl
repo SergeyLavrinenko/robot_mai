@@ -1,0 +1,32 @@
+use nk.base._
+
+/* Including EDL files. */
+use EDL kl.core.Core
+use EDL Einit
+
+/**
+ * Allows the KasperskyOS kernel to start itself and tasks with the Einit class.
+ */
+execute src=kl.core.Core, dst=kl.core.Core
+{
+    grant()
+}
+
+execute src=kl.core.Core, dst=Einit
+{
+    grant()
+}
+
+/**
+ * Allows the tasks with the Einit class to send requests to the KasperskyOS kernel and get
+ * responses. This enables the Einit program to use core endpoints.
+ */
+request src=Einit, dst=kl.core.Core
+{
+    grant()
+}
+
+response src=kl.core.Core, dst=Einit
+{
+    grant()
+}

@@ -1,0 +1,8 @@
+/* Definition of the `ping` component. */
+
+component echo.NavigationCommand
+
+endpoints {
+    /* Declaration of a named implementation of the "Ping" interface. */
+    setNavigationCommand : echo.NavigationCommand
+}

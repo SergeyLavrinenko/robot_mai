@@ -1,0 +1,41 @@
+/* Package with an "IConfiguration interface declaration. */
+
+package echo.NavigationCommand
+
+struct NavigationCommandData {
+    UInt8 command;
+    UInt32 durationMs;
+    SInt8 speed;
+}
+
+struct Point {
+    SInt32 x;
+    SInt32 y;
+}
+
+struct CurrentPosition {
+    Point up;
+    Point down;
+}
+
+struct Rectangle {
+    Point tl;
+    Point tr;
+    Point br;
+    Point bl;
+} 
+
+struct AutoNavigationData
+{
+    Point target;
+    CurrentPosition curPos;
+    Rectangle realCoords;
+    Rectangle screenCoords;
+}
+
+
+interface {
+    /* Ping method interface. */
+    SetNavigationCommand(in NavigationCommandData value, out UInt8 result);
+    SetAutoNavigationCommand(in AutoNavigationData value, out UInt8 result);
+}

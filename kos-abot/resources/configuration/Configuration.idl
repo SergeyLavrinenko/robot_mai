@@ -1,0 +1,16 @@
+/* Package with an "IConfiguration interface declaration. */
+
+package echo.Configuration
+
+struct ConfiguractionData {
+    string<128> mqttHost;
+    UInt16 mqttPort;
+    string<128> mqttTopic;
+    string<128> mqttUser;
+    string<128> mqttPassword;
+}
+
+interface {
+    /* Ping method interface. */
+    GetConfiguration(in UInt32 value, out ConfiguractionData result);
+}
