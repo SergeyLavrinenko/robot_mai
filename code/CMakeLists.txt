@@ -13,7 +13,8 @@ add_executable(main
     "robot.cpp"
     "robot_control.cpp"
     "drink_control.cpp"
-    "order_manager.cpp")
+    "order_manager.cpp"
+    "robot_mqtt.cpp")
 
 target_link_libraries( main ${OpenCV_LIBS}
     PkgConfig::Mosquitto )

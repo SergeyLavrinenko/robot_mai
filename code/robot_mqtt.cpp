@@ -1,5 +1,6 @@
 #include "robot_mqtt.h"
 
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -29,11 +30,14 @@ Robot_mqtt::Robot_mqtt(char *s, int p): server(s), port(p){
 
 
 void Robot_mqtt::left(){
-    sendtoserver("{ \"cmd\":\"left\", \"val\": 0.1, \"spd\": 0.2}");
+    std::cout<<"left";
+    sendtoserver("{ \"cmd\":\"left\", \"val\": 0.1, \"spd\": 0.3}");
 }
 void Robot_mqtt::right(){
-    sendtoserver("{ \"cmd\":\"right\", \"val\": 0.1, \"spd\": 0.2}");
+    std::cout<<"left";
+    sendtoserver("{ \"cmd\":\"right\", \"val\": 0.1, \"spd\": 0.3}");
 }
 void Robot_mqtt::forward(){
-    sendtoserver("{ \"cmd\":\"forward\", \"val\": 0.3, \"spd\": 0.2}");
+    std::cout<<"left";
+    sendtoserver("{ \"cmd\":\"forward\", \"val\": 0.1, \"spd\": 0.5}");
 }

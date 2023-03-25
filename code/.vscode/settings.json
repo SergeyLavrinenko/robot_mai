@@ -28,6 +28,10 @@
         "system_error": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "array": "cpp",
+        "bit": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp"
     }
 }

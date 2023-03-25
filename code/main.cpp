@@ -1,15 +1,22 @@
+#include <memory>
+
 #include "robot_control.h"
+#include "detector.h"
+#include "robot.h"
+#include "order_manager.h"
+#include "drink_control.h"
+#include "robot_mqtt.h"
 using namespace std;
 using namespace cv;
 
 
 int main () {
-    Detector *det = new Detector(0);
-    Robot *robot = new Robot;
-    Drink_control *drink = new Drink_control;
-    Order_manager *order = new Order_manager;
+    shared_ptr<Detector> det(new Detector(0));
+    shared_ptr<Robot> robot(new Robot_mqtt("192.168.1.4", 1883));
+    shared_ptr<Drink_control> drink_control(new Drink_control);
+    shared_ptr<Order_manager> order_control(new Order_manager);
 
-    Robot_control *rob_control = new Robot_control(det, robot, order, drink); 
+    shared_ptr<Robot_control> rob_control(new Robot_control(det, robot, order_control, drink_control));
 
     det->set_color_bot_front(34, 65, 255);
     det->set_color_bot_rear(176, 169, 220);
@@ -17,39 +24,6 @@ int main () {
 
 
     rob_control->run();
-
-
-    /*while(1){
-        //
-
-        det.update_image();
-        
-        det.draw_rect_bot_front(0, 255, 0);
-        det.draw_rect_bot_rear(255, 0 , 0);
-        det.draw_rect_target(0, 0, 255);
-
-        Mat res_image = det.get_image();
-
-        // ---- Наносим градусы на картинку ----
-        Point text_position(20, 30);
-        int font_size = 1;
-        Scalar font_Color(90, 100, 0);
-        int font_weight = 2;
-        putText(res_image, to_string(det.get_angle_to_target()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
-        // -------------------------------------
-        Point text_position1(20, 60);
-        int font_size1 = 1;
-        Scalar font_Color1(90, 100, 0);
-        int font_weight1 = 2;
-        putText(res_image, to_string(det.get_distance_to_target()), text_position1,FONT_HERSHEY_COMPLEX, font_size1,font_Color1, font_weight1);
-
-        cv::imshow("tmp", res_image);
-        
-        char c=(char)waitKey(25);
-        if(c==27)
-            break;
-    }*/
-  delete det;
 
   return 0;
 }

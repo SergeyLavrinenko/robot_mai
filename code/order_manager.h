@@ -1,3 +1,5 @@
+#pragma once
+
 class Order_manager{
 public:
     bool order_exist();

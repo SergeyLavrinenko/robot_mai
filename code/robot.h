@@ -1,8 +1,9 @@
+#pragma once
 
 class Robot{
 public:
     Robot();
-    void left();
-    void right();
-    void forward();
+    virtual void left();
+    virtual void right();
+    virtual void forward();
 };

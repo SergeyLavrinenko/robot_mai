@@ -41,7 +41,7 @@ void Detector::update_angle_bot(){
     Point p_b = find_rect_centre(rect_bot_rear);
 
     this->point_centre_bot = find_centre_beetwen_point(p_a, p_b);
-    this->angle_bot = calc_angle_beetwen_point(p_a, p_b);
+    this->angle_bot = calc_angle_beetwen_point(p_b, p_a);
 }
 
 void Detector::update_angle_to_target(){
@@ -112,7 +112,7 @@ int Detector::get_distance_to_target(){
     return this->distance_target;
 }
 bool Detector::has_delta_angle(int delta){
-    if (this->angle_target > delta)
+    if (abs(this->angle_target) > delta)
         return true;
     else
         return false;

@@ -1,28 +1,26 @@
 #include <iostream>
+#include <memory>
 #include "robot_control.h"
 #include <opencv2/opencv.hpp>
 
 
 void Robot_control::processEvents() {
 
-    
-        
-
     switch (this->state) {
     case EWait:
-        if (ord->order_exist()) {
+        if (ord_control->order_exist()) {
             this->state = EFillingGlass;
         }
         break;
     case EFillingGlass:
         if(flag_filling_glass){
-            if(drink->drink_ready()){
+            if(dr_control->drink_ready()){
                 flag_filling_glass = false;
                 this->state = EMove;
             }
         }
         else{
-            drink->open();
+            dr_control->open();
             flag_filling_glass = true;
         }
         break;
@@ -51,18 +49,17 @@ void Robot_control::processEvents() {
         this->state = EMove;
         break;
     case ESendPush:
-        ord->send_push();
+        ord_control->send_push();
         this->state = EGivingGlass;
         break;
     case EGivingGlass:
-        if(ord->glass_is_given())
+        if(ord_control->glass_is_given())
             this->state = EWait; 
         break;
     }
 }
 void Robot_control::run() {
 
-    
     while (1){
         this->det->update_image();
         this->det->draw_image();
@@ -75,6 +72,7 @@ void Robot_control::run() {
                 break;
     }
 }
-Robot_control::Robot_control(Detector* d, Robot* r, Order_manager* o, Drink_control *dr): det(d), robot(r), drink(dr), ord(o){
+
+Robot_control::Robot_control(std::shared_ptr<Detector> d, std::shared_ptr<Robot> r, std::shared_ptr<Order_manager> o, std::shared_ptr<Drink_control> dr): det(d), robot(r), dr_control(dr), ord_control(o){
     this->state = EWait;
 }
