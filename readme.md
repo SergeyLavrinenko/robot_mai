@@ -21,7 +21,7 @@
 #### Данный проект был склонирован за исключением следующих изменений:
 <br/>  
 
-* В файле [pwm_controller.cpp](https://github.com/SergeyLavrinenko/robot_mai/src/kos-abot/navigation/src/pwm_controller.cpp):
+* В файле [pwm_controller.cpp](https://github.com/SergeyLavrinenko/robot_mai/blob/master/src/kos-abot/navigation/src/pwm_controller.cpp):
 
 ```C++
 void pwm_controller::goLeft(int perc) {
@@ -42,7 +42,7 @@ void pwm_controller::goBack(int perc) {
 
 ```
 
-+ В файле [server.c](https://github.com/SergeyLavrinenko/robot_mai/src/kos-abot/configuration_server/src/server.c) изменены конфигурационные данные для подключения к **MQTT** брокеру.
++ В файле [server.c](https://github.com/SergeyLavrinenko/robot_mai/blob/master/src/kos-abot/configuration_server/src/server.c) изменены конфигурационные данные для подключения к **MQTT** брокеру.
   
 <br><br/>
 
@@ -53,14 +53,14 @@ void pwm_controller::goBack(int perc) {
 Распознование ключевых точек таких как: робот, точка назначени, точка базирования. Осузествляются путем распознавания контрастных однотонных цветов, расположенных в данных ключевых точках.
 <br>
 
-Цвета заданы в формате **HSV** и задаются файле [main.cpp](https://github.com/SergeyLavrinenko/robot_mai/src/control/main.cpp):
+Цвета заданы в формате **HSV** и задаются файле [main.cpp](https://github.com/SergeyLavrinenko/robot_mai/blob/master/src/control/main.cpp):
 ```C++
 det->set_color_bot_rear(0, 0, 0);
 det->set_color_bot_front(0, 0, 0);
 det->set_color_target(0, 0, 0);
 det->set_color_home(0, 0, 0);
 ```
-Конфигруационные данные для подключения к **MQTT** брокеру расположены также в файле [main.cpp](https://github.com/SergeyLavrinenko/robot_mai/src/control/main.cpp):
+Конфигруационные данные для подключения к **MQTT** брокеру расположены также в файле [main.cpp](https://github.com/SergeyLavrinenko/robot_mai/blob/master/src/control/main.cpp):
 ```C++
 #define mqtt_host "192.168.1.4"
 #define mqtt_port 1883
@@ -69,7 +69,7 @@ det->set_color_home(0, 0, 0);
 ### 3. Telegram bot
 Telegram бот необходим для взаимодействия пользователя и модуля Control. У пользователя есть возможность передать команду для движения робота к цели и команду для отправления его обратно на базу.
 
-Конфигруационные данные для подключения к **MQTT** брокеру расположены в файле [main.cpp](https://github.com/SergeyLavrinenko/robot_mai/src/telegram_bot/main.cpp) модуля telegram_bot:
+Конфигруационные данные для подключения к **MQTT** брокеру расположены в файле [main.cpp](https://github.com/SergeyLavrinenko/robot_mai/blob/master/src/telegram_bot/main.cpp) модуля telegram_bot:
 ```c++
 #define mqtt_host "192.168.1.4"
 #define mqtt_port 1883
@@ -78,3 +78,4 @@ Telegram бот необходим для взаимодействия поль�
 ```c++
 string token = "YOUR_TOKEN";
 ```
+
