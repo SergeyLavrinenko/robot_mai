@@ -6,7 +6,7 @@
 #include "drink_control.h"
 
 
-enum EState {EWait, EMove, ERotate, EForward, EFillingGlass, ESendPush, EGivingGlass};
+enum EState {EWait, EMove ,EMoveToTarget, EMoveToHome, ERotateLeft, ERotateRight, EForward, EFillingGlass, ESendPush, EGivingGlass};
 
 class Robot_control{
     std::shared_ptr<Detector> det;
@@ -17,6 +17,7 @@ class Robot_control{
 	EState state;
     
     bool flag_filling_glass = false;
+    bool flag_move_to_home = false;
 
     void processEvents();
 

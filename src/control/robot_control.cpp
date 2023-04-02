@@ -16,7 +16,7 @@ void Robot_control::processEvents() {
         if(flag_filling_glass){
             if(dr_control->drink_ready()){
                 flag_filling_glass = false;
-                this->state = EMove;
+                this->state = EMoveToTarget;
             }
         }
         else{
@@ -25,23 +25,52 @@ void Robot_control::processEvents() {
         }
         break;
     case EMove:
-        if(det->has_delta_angle(5)){
-            this->state = ERotate;
+        if(flag_move_to_home)
+            this->state = EMoveToHome;
+        else
+            this->state = EMoveToTarget;
+        break;
+    case EMoveToHome:
+        flag_move_to_home = true;
+        if(det->has_delta_angle_to_home(5)){
+            if (det->get_angle_to_home() > 0)
+                this->state = ERotateLeft;
+            else
+                this->state = ERotateRight;
             break;
         }
 
-        if(det->has_delta_distance(160))
+        if(det->has_delta_distance_to_home(160)){
+            this->state = EForward;
+        }
+        else{
+            this->state = EWait;
+            ord_control->order_end();
+            flag_move_to_home = false;
+        }
+        
+        break;
+    case EMoveToTarget:
+        if(det->has_delta_angle_to_target(5)){
+            if (det->get_angle_to_target() > 0)
+                this->state = ERotateLeft;
+            else
+                this->state = ERotateRight;
+            break;
+        }
+
+        if(det->has_delta_distance_to_target(160))
             this->state = EForward;
         else
             this->state = ESendPush;
         
         break;
-    case ERotate:
-        if (det->get_angle_to_target() > 0)
-            robot->left();
-        else
-            robot->right();
-
+    case ERotateLeft:
+        robot->left();
+        this->state = EMove;
+        break;
+    case ERotateRight:
+        robot->right();
         this->state = EMove;
         break;
     case EForward:
@@ -54,7 +83,7 @@ void Robot_control::processEvents() {
         break;
     case EGivingGlass:
         if(ord_control->glass_is_given())
-            this->state = EWait; 
+            this->state = EMoveToHome; 
         break;
     }
 }
@@ -64,6 +93,7 @@ void Robot_control::run() {
         this->det->update_image();
         this->det->draw_image();
         std::cout<<this->state<<"\n";
+        ord_control->loop();
 
         this->processEvents();
 

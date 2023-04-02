@@ -30,14 +30,11 @@ Robot_mqtt::Robot_mqtt(char *s, int p): server(s), port(p){
 
 
 void Robot_mqtt::left(){
-    std::cout<<"left";
     sendtoserver("{ \"cmd\":\"left\", \"val\": 0.1, \"spd\": 0.3}");
 }
 void Robot_mqtt::right(){
-    std::cout<<"left";
     sendtoserver("{ \"cmd\":\"right\", \"val\": 0.1, \"spd\": 0.3}");
 }
 void Robot_mqtt::forward(){
-    std::cout<<"left";
     sendtoserver("{ \"cmd\":\"forward\", \"val\": 0.1, \"spd\": 0.5}");
 }

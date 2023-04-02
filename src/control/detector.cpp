@@ -55,6 +55,17 @@ void Detector::update_distance_to_target(){
     this->distance_target = calc_distance_beetwen_point(this->point_centre_bot, point_target);
 }
 
+void Detector::update_angle_to_home(){
+    Point point_home = find_rect_centre(rect_home);
+    int angle_bot_centre_to_home = calc_angle_beetwen_point(this->point_centre_bot, point_home);
+    this->angle_home = angle_bot_centre_to_home - this->angle_bot;
+}
+void Detector::update_distance_to_home(){
+    Point point_home = find_rect_centre(rect_home);
+    this->distance_home = calc_distance_beetwen_point(this->point_centre_bot, point_home);
+}
+
+
 Detector::Detector(int id){
     cap.open(id);
     if(!cap.isOpened())
@@ -70,9 +81,11 @@ void Detector::draw_image(){
     this->draw_rect_bot_front(0, 255, 0);
     this->draw_rect_bot_rear(255, 0 , 0);
     this->draw_rect_target(0, 0, 255);
+    this->draw_rect_home(100, 200, 30);
 
     Mat res_image = this->get_image();
 
+    // До цели
     // ---- Наносим градусы на картинку ----
     Point text_position(20, 30);
     int font_size = 1;
@@ -80,11 +93,19 @@ void Detector::draw_image(){
     int font_weight = 2;
     putText(res_image, std::to_string(this->get_angle_to_target()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
     // ------Наносим расстояние до цели-----
-    Point text_position1(20, 60);
-    int font_size1 = 1;
-    Scalar font_Color1(90, 100, 0);
-    int font_weight1 = 2;
-    putText(res_image, std::to_string(this->get_distance_to_target()), text_position1,FONT_HERSHEY_COMPLEX, font_size1,font_Color1, font_weight1);
+    text_position.x = 20;
+    text_position.y = 60;
+    putText(res_image, std::to_string(this->get_distance_to_target()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
+
+    // До дома
+    // ---- Наносим градусы на картинку ----
+    text_position.x = 500;
+    text_position.y = 30;
+    putText(res_image, std::to_string(this->get_angle_to_home()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
+    // ------Наносим расстояние до цели-----
+    text_position.x = 500;
+    text_position.y = 60;
+    putText(res_image, std::to_string(this->get_distance_to_home()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
 
     cv::imshow("tmp", res_image);
 }
@@ -96,10 +117,13 @@ void Detector::update_image(){
     this->rect_bot_front = this->detect_rect(this->color_bot_front);
     this->rect_bot_rear = this->detect_rect(this->color_bot_rear);
     this->rect_target = this->detect_rect(this->color_target);
+    this->rect_home = this->detect_rect(this->color_home);
 
     this->update_angle_bot();
     this->update_angle_to_target();
     this->update_distance_to_target();
+    this->update_angle_to_home();
+    this->update_distance_to_home();
 }
 
 int Detector::get_angle_to_target(){
@@ -111,14 +135,33 @@ int Detector::get_angle_bot(){
 int Detector::get_distance_to_target(){
     return this->distance_target;
 }
-bool Detector::has_delta_angle(int delta){
+int Detector::get_angle_to_home(){
+    return this->angle_home;
+}
+int Detector::get_distance_to_home(){
+    return this->distance_home;
+}
+
+bool Detector::has_delta_angle_to_target(int delta){
     if (abs(this->angle_target) > delta)
         return true;
     else
         return false;
 }
-bool Detector::has_delta_distance(int delta){
+bool Detector::has_delta_distance_to_target(int delta){
     if (this->distance_target > delta)
+        return true;
+    else
+        return false;
+}
+bool Detector::has_delta_angle_to_home(int delta){
+    if (abs(this->angle_home) > delta)
+        return true;
+    else
+        return false;
+}
+bool Detector::has_delta_distance_to_home(int delta){
+    if (this->distance_home > delta)
         return true;
     else
         return false;
@@ -139,6 +182,11 @@ void Detector::set_color_target(int h, int s, int v){
     this->color_target.s = s;
     this->color_target.v = v;
 }
+void Detector::set_color_home(int h, int s, int v){
+    this->color_home.h = h;
+    this->color_home.s = s;
+    this->color_home.v = v;
+}
 
 void Detector::draw_rect_bot_front(int frame_r, int frame_g, int frame_b){
     cv::rectangle(frame_res, this->rect_bot_front,cv::Scalar(frame_r, frame_g, frame_b),2);
@@ -148,6 +196,9 @@ void Detector::draw_rect_bot_rear(int frame_r, int frame_g, int frame_b){
 }
 void Detector::draw_rect_target(int frame_r, int frame_g, int frame_b){
     cv::rectangle(frame_res, this->rect_target,cv::Scalar(frame_r, frame_g, frame_b),2);
+}
+void Detector::draw_rect_home(int frame_r, int frame_g, int frame_b){
+    cv::rectangle(frame_res, this->rect_home,cv::Scalar(frame_r, frame_g, frame_b),2);
 }
 
 
