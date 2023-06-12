@@ -3,7 +3,7 @@
 class Robot{
 public:
     Robot();
-    virtual void left();
-    virtual void right();
-    virtual void forward();
+    virtual void left(float time);
+    virtual void right(float time);
+    virtual void forward(float time);
 };

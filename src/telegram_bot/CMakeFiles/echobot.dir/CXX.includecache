@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/orangepi/robot_mai/src/telegram_bot/main.cpp
+csignal
+-
+cstdio
+-
+cstdlib
+-
+exception
+-
+string
+-
+time.h
+-
+signal.h
+-
+stdint.h
+-
+mosquitto.h
+-
+tgbot/tgbot.h
+-
+

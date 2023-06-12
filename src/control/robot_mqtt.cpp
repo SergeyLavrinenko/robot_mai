@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <mosquitto.h>
 #include <string.h>
+#include <string>
 #include <json-c/json.h>
 #include "robot.h"
 #define NUM_MESSAGES 30
@@ -29,12 +30,12 @@ Robot_mqtt::Robot_mqtt(char *s, int p): server(s), port(p){
 }
 
 
-void Robot_mqtt::left(){
-    sendtoserver("{ \"cmd\":\"left\", \"val\": 0.1, \"spd\": 0.3}");
+void Robot_mqtt::left(float time){
+    sendtoserver(("{ \"cmd\":\"left\", \"val\": " + std::to_string(time)  + ", \"spd\": 0.6}").c_str());
 }
-void Robot_mqtt::right(){
-    sendtoserver("{ \"cmd\":\"right\", \"val\": 0.1, \"spd\": 0.3}");
+void Robot_mqtt::right(float time){
+    sendtoserver(("{ \"cmd\":\"right\", \"val\": " + std::to_string(time)  + ", \"spd\": 0.6}").c_str());
 }
-void Robot_mqtt::forward(){
-    sendtoserver("{ \"cmd\":\"forward\", \"val\": 0.1, \"spd\": 0.5}");
+void Robot_mqtt::forward(float time){
+    sendtoserver(("{ \"cmd\":\"forward\", \"val\": " + std::to_string(time)  + ", \"spd\": 0.4}").c_str());
 }

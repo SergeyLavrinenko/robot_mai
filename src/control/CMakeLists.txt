@@ -14,7 +14,12 @@ add_executable(main
     "robot_control.cpp"
     "drink_control.cpp"
     "order_manager.cpp"
-    "robot_mqtt.cpp")
+    "robot_mqtt.cpp"
+    "ws2812b/RGB.h"
+    "ws2812b/Led.cpp" 
+    "ws2812b/Led.h" 
+    "spi/SPI.cpp" 
+    "spi/SPI.h")
 
 target_link_libraries( main ${OpenCV_LIBS}
     PkgConfig::Mosquitto )

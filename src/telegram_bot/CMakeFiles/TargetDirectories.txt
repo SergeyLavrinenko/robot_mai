@@ -1,0 +1,3 @@
+/home/orangepi/robot_mai/src/telegram_bot/CMakeFiles/edit_cache.dir
+/home/orangepi/robot_mai/src/telegram_bot/CMakeFiles/rebuild_cache.dir
+/home/orangepi/robot_mai/src/telegram_bot/CMakeFiles/echobot.dir

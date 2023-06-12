@@ -34,6 +34,9 @@ class Detector{
     int angle_home;
     int distance_home;
 
+    bool target_is_point; // Цель задана координатами
+    Point point_target;
+
     static Point find_rect_centre(Rect r);
     static Point find_centre_beetwen_point(Point p1, Point p2);
     static int calc_angle_beetwen_point(Point p1, Point p2);
@@ -49,7 +52,7 @@ class Detector{
 
     public:
 
-    Detector(int id);
+    Detector(int id, bool targetIsPoint = false);
     Detector(Detector &d);
     Detector& operator=(Detector &d);
 
@@ -57,6 +60,9 @@ class Detector{
     void set_color_bot_rear(int h, int s, int v);
     void set_color_target(int h, int s, int v);
     void set_color_home(int h, int s, int v);
+
+    void set_point_target(int x, int y);
+    void set_target_is_point(bool flag);
 
     Mat get_image();
     void update_image();
@@ -78,6 +84,7 @@ class Detector{
     void draw_rect_bot_rear(int frame_r, int frame_g, int frame_b);
     void draw_rect_target(int frame_r, int frame_g, int frame_b);
     void draw_rect_home(int frame_r, int frame_g, int frame_b);
+    void draw_circle_target(int radius);
 
 
     ~Detector();

@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall CMakeFiles/echobot.dir/main.cpp.o -o echobot  /usr/local/lib/libTgBot.a -lpthread /usr/lib/aarch64-linux-gnu/libssl.so /usr/lib/aarch64-linux-gnu/libcrypto.so /usr/lib/aarch64-linux-gnu/libboost_system.so.1.74.0 /usr/lib/aarch64-linux-gnu/libcurl.so /usr/lib/aarch64-linux-gnu/libmosquitto.so 

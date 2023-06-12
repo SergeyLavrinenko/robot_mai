@@ -5,11 +5,11 @@ Robot::Robot(){
     
 }
 
-void Robot::left(){
+void Robot::left(float time){
 }
 
-void Robot::right(){
+void Robot::right(float time){
 }
 
-void Robot::forward(){
+void Robot::forward(float time){
 }

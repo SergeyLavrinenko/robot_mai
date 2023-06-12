@@ -45,14 +45,22 @@ void Detector::update_angle_bot(){
 }
 
 void Detector::update_angle_to_target(){
-    Point point_target = find_rect_centre(rect_target);
-    int angle_bot_centre_to_target = calc_angle_beetwen_point(this->point_centre_bot, point_target);
+    Point point_target_;
+    if(this->target_is_point)  
+        point_target_ = this->point_target;
+    else
+        point_target_ = find_rect_centre(rect_target);
+    int angle_bot_centre_to_target = calc_angle_beetwen_point(this->point_centre_bot, point_target_);
     this->angle_target = angle_bot_centre_to_target - this->angle_bot;
 }
 
 void Detector::update_distance_to_target(){
-    Point point_target = find_rect_centre(rect_target);
-    this->distance_target = calc_distance_beetwen_point(this->point_centre_bot, point_target);
+    Point point_target_;
+    if(this->target_is_point)  
+        point_target_ = this->point_target;
+    else
+        point_target_ = find_rect_centre(rect_target);
+    this->distance_target = calc_distance_beetwen_point(this->point_centre_bot, point_target_);
 }
 
 void Detector::update_angle_to_home(){
@@ -66,7 +74,8 @@ void Detector::update_distance_to_home(){
 }
 
 
-Detector::Detector(int id){
+Detector::Detector(int id, bool targetIsPoint){
+    this->target_is_point = targetIsPoint;
     cap.open(id);
     if(!cap.isOpened())
         cout << "Error opening video stream or file" << endl;
@@ -83,7 +92,11 @@ void Detector::draw_image(){
     this->draw_rect_target(0, 0, 255);
     this->draw_rect_home(100, 200, 30);
 
+    if(target_is_point)
+        this->draw_circle_target(46);
+    
     Mat res_image = this->get_image();
+
 
     // До цели
     // ---- Наносим градусы на картинку ----
@@ -107,7 +120,12 @@ void Detector::draw_image(){
     text_position.y = 60;
     putText(res_image, std::to_string(this->get_distance_to_home()), text_position,FONT_HERSHEY_COMPLEX, font_size,font_Color, font_weight);
 
-    cv::imshow("tmp", res_image);
+    cv::moveWindow("tmp", 40,30);
+    cv::moveWindow("tmp2", 450,550);
+    if(target_is_point)
+        cv::imshow("tmp", res_image);
+    else
+        cv::imshow("tmp2", res_image);
 }
 
 void Detector::update_image(){
@@ -187,6 +205,13 @@ void Detector::set_color_home(int h, int s, int v){
     this->color_home.s = s;
     this->color_home.v = v;
 }
+void Detector::set_point_target(int x, int y){
+    this->point_target.x = x;
+    this->point_target.y = y;
+}
+void Detector::set_target_is_point(bool flag){
+    this->target_is_point = flag;
+}
 
 void Detector::draw_rect_bot_front(int frame_r, int frame_g, int frame_b){
     cv::rectangle(frame_res, this->rect_bot_front,cv::Scalar(frame_r, frame_g, frame_b),2);
@@ -199,6 +224,11 @@ void Detector::draw_rect_target(int frame_r, int frame_g, int frame_b){
 }
 void Detector::draw_rect_home(int frame_r, int frame_g, int frame_b){
     cv::rectangle(frame_res, this->rect_home,cv::Scalar(frame_r, frame_g, frame_b),2);
+}
+void Detector::draw_circle_target(int radius){
+    Scalar colorCircle1(0, 0, 255); // (B, G, R)
+    int thicknessCircle1 = 2;
+    cv::circle(frame_res, this->point_target, radius, colorCircle1, thicknessCircle1);
 }
 
 

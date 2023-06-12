@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <mosquitto.h>
 
-#define mqtt_host "192.168.1.4"
+#define mqtt_host "127.0.0.1"
 #define mqtt_port 1883
 
 #define client_id "telegram_bot"

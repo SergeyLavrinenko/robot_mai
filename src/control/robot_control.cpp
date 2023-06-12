@@ -9,7 +9,8 @@ void Robot_control::processEvents() {
     switch (this->state) {
     case EWait:
         if (ord_control->order_exist()) {
-            this->state = EFillingGlass;
+            this->state = EMoveToHome;
+            this->flag_start = true;
         }
         break;
     case EFillingGlass:
@@ -25,56 +26,89 @@ void Robot_control::processEvents() {
         }
         break;
     case EMove:
-        if(flag_move_to_home)
+        std::cout<<"move_state "<<this->move_state<<"\n";
+        if(move_state == toHome){
             this->state = EMoveToHome;
-        else
+        }
+        else if(move_state == toDrink){
+            this->state = EMoveToDrink;
+        }
+        else{
             this->state = EMoveToTarget;
+        }
         break;
     case EMoveToHome:
-        flag_move_to_home = true;
-        if(det->has_delta_angle_to_home(5)){
-            if (det->get_angle_to_home() > 0)
+        this->move_state = toHome;
+        if(det_main->has_delta_angle_to_home(5)){
+            if (det_main->get_angle_to_home() > 0)
                 this->state = ERotateLeft;
             else
                 this->state = ERotateRight;
             break;
         }
 
-        if(det->has_delta_distance_to_home(160)){
+        if(det_main->has_delta_distance_to_home(160)){
+            this->time_forward = 0.1;
             this->state = EForward;
         }
         else{
-            this->state = EWait;
-            ord_control->order_end();
-            flag_move_to_home = false;
+            this->state = EMoveToDrink;
         }
         
         break;
-    case EMoveToTarget:
-        if(det->has_delta_angle_to_target(5)){
-            if (det->get_angle_to_target() > 0)
+    case EMoveToDrink:
+        this->move_state = toDrink;
+        if(det_drink->has_delta_angle_to_target(5)){
+            if (det_drink->get_angle_to_target() > 0)
                 this->state = ERotateLeft;
             else
                 this->state = ERotateRight;
             break;
         }
 
-        if(det->has_delta_distance_to_target(160))
+        if(det_drink->has_delta_distance_to_target(20)){
+            this->time_forward = 0.05;
             this->state = EForward;
-        else
+        }
+        else{
+            if(this->flag_start){
+                this->state = EFillingGlass;
+                this->flag_start = false;
+            }
+            else{
+                this->state = EWait;
+                ord_control->order_end();
+            }
+        }
+        break;
+    case EMoveToTarget:
+        this->move_state = toTarget;
+        if(det_main->has_delta_angle_to_target(5)){
+            if (det_main->get_angle_to_target() > 0)
+                this->state = ERotateLeft;
+            else
+                this->state = ERotateRight;
+            break;
+        }
+
+        if(det_main->has_delta_distance_to_target(160)){
+            this->time_forward = 0.1;
+            this->state = EForward;
+        }
+        else{
             this->state = ESendPush;
-        
+        }
         break;
     case ERotateLeft:
-        robot->left();
+        robot->left(0.02);
         this->state = EMove;
         break;
     case ERotateRight:
-        robot->right();
+        robot->right(0.02);
         this->state = EMove;
         break;
     case EForward:
-        robot->forward();
+        robot->forward(this->time_forward);
         this->state = EMove;
         break;
     case ESendPush:
@@ -90,8 +124,10 @@ void Robot_control::processEvents() {
 void Robot_control::run() {
 
     while (1){
-        this->det->update_image();
-        this->det->draw_image();
+        this->det_main->update_image();
+        this->det_main->draw_image();
+        this->det_drink->update_image();
+        this->det_drink->draw_image();
         std::cout<<this->state<<"\n";
         ord_control->loop();
 
@@ -103,6 +139,6 @@ void Robot_control::run() {
     }
 }
 
-Robot_control::Robot_control(std::shared_ptr<Detector> d, std::shared_ptr<Robot> r, std::shared_ptr<Order_manager> o, std::shared_ptr<Drink_control> dr): det(d), robot(r), dr_control(dr), ord_control(o){
+Robot_control::Robot_control(std::shared_ptr<Detector> d_m, std::shared_ptr<Detector> d_d, std::shared_ptr<Robot> r, std::shared_ptr<Order_manager> o, std::shared_ptr<Drink_control> dr): det_main(d_m), det_drink(d_d), robot(r), dr_control(dr), ord_control(o){
     this->state = EWait;
 }

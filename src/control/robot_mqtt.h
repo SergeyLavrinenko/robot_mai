@@ -10,7 +10,7 @@ class Robot_mqtt:public Robot{
 
 public:
     Robot_mqtt(char *s, int p);
-    void left();
-    void right();
-    void forward();
+    void left(float time);
+    void right(float time);
+    void forward(float time);
 };

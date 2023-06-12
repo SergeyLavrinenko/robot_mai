@@ -3,12 +3,12 @@ FROM ubuntu:18.04
 
 RUN apt update
 RUN apt install -y software-properties-common
-RUN add-apt-repository 'deb http://security.ubuntu.com/ubuntu xenial-security main'
+
 RUN apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
 RUN apt-get update
 RUN apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev \
 libavformat-dev libswscale-dev python-dev python-numpy libtbb2 libtbb-dev \
-libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev unzip
+libjpeg-dev libpng-dev libtiff-dev libjasper1 libdc1394-22-dev unzip
 RUN apt install -y libjson-c-dev
 RUN apt install -y mosquitto-clients libmosquitto-dev
 RUN apt-get install -y libcanberra-gtk-module
